@@ -1,35 +1,28 @@
 package cts.clase;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-
 public class StudentiReader implements Reader{
-
-
     @Override
-    public List<Aplicant> readAplicant(String file) throws FileNotFoundException {
-        Scanner input = new Scanner(new File(file));
-        input.useDelimiter(",|\n");
-        List<Aplicant> studenti = new ArrayList<Aplicant>();
+    public List<Aplicant> citireAplicanti(String numeFisier) throws FileNotFoundException {
+        Scanner input = new Scanner(new File(numeFisier));
+        input.useDelimiter(",");
+        List<Aplicant> studenti = new ArrayList<>();
+        input.close();
+        return studenti;
+    }
 
-        while (input.hasNext()) {
-            String nume = input.next();
-            String prenume = (input.next()).toString();
-            int varsta = Integer.valueOf(input.nextInt());
-            int punctaj = Integer.valueOf(input.nextInt());
-            int nr = Integer.valueOf(input.nextInt());
-            String[] vect = new String[5];
-            for (int i = 0; i < nr; i++)
-                vect[i] = input.next();
-            int an_studii = input.nextInt();
-            String facultate = (input.next()).toString();
-            Student s = new Student(nume, prenume, varsta, punctaj, nr, vect, facultate, an_studii);
+    private List<Aplicant> citireAplicantiDinScanner(Scanner scanner){
+        List<Aplicant> studenti = citireAplicantiDinScanner(scanner);
+
+        while (scanner.hasNext()) {
+
+            Student s=new Student();
+            AplicantReader.citireAplicant(scanner,s);
+            int an_studii = scanner.nextInt();
+            String facultate = (scanner.next()).toString();
+            s.setFacultate(facultate);
+            s.setAnStudii(an_studii);
             studenti.add(s);
         }
-        input.close();
         return studenti;
     }
 }

@@ -7,29 +7,26 @@ import java.util.List;
 import java.util.Scanner;
 
 public class AngajatiReader implements Reader {
-
-
     @Override
-    public List<Aplicant> readAplicant(String file) throws FileNotFoundException {
-        Scanner input2 = new Scanner(new File(file));
-        input2.useDelimiter(",");
-        List<Aplicant> angajati = new ArrayList<Aplicant>();
+    public List<Aplicant> citireAplicanti(String numeFisier) throws FileNotFoundException {
+        Scanner scanner = new Scanner(new File(numeFisier));
+        scanner.useDelimiter(",");
+        List<Aplicant> angajati = citireAplicantiDinScanner(scanner);
+        scanner.close();
+        return angajati;
+    }
 
-        while (input2.hasNext()) {
-            String nume = input2.next();
-            String prenume = input2.next();
-            int varsta = input2.nextInt();
-            int punctaj = input2.nextInt();
-            int nr = input2.nextInt();
-            String[] vect = new String[5];
-            for (int i = 0; i < nr; i++)
-                vect[i] = input2.next();
-            int salariu = input2.nextInt();
-            String ocupatie = input2.next();
-            Angajat a = new Angajat(nume, prenume, varsta, punctaj, nr, vect, salariu, ocupatie);
-            angajati.add(a);
+    private List<Aplicant> citireAplicantiDinScanner(Scanner scanner){
+        List<Aplicant> angajati = new ArrayList<Aplicant>();
+        while (scanner.hasNext()) {
+            Angajat a1=new Angajat();
+            AplicantReader.citireAplicant(scanner,a1);
+            int salariu = scanner.nextInt();
+            String ocupatie = scanner.next();
+            a1.setSalariu(salariu);
+            a1.setOcupatie(ocupatie);
+            angajati.add(a1);
         }
-        input2.close();
         return angajati;
     }
 }
